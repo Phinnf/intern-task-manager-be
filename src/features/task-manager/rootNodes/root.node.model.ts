@@ -1,9 +1,13 @@
 import mongoose, { Schema, Document } from "mongoose";
+import { z } from "zod";
 
-interface IRootNode extends Document {
-  title: string;
-  department: string;
-  owner: string;
+export const RootNodeZodSchema = z.object({
+  title: z.string().min(1, "Title cannot be empty"),
+  department: z.string().min(1, "Department is required"),
+  owner: z.string().min(1, "Owner is required"),
+});
+
+export interface IRootNode extends z.infer<typeof RootNodeZodSchema>, Document {
   createdAt: Date;
   updatedAt: Date;
 }

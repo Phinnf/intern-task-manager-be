@@ -1,41 +1,32 @@
 import mongoose, { Schema, Document } from "mongoose";
+import type { CreateRiskInput } from "./risk.node.validation.js";
+import { CategoryEnum, LevelEnum, StatusEnum } from "./risk.node.validation.js";
 
-export interface IRisk extends Document {
+export interface IRisk extends Omit<CreateRiskInput, "parentId">, Document {
   parentId: mongoose.Types.ObjectId;
-  name: string;
-  description: string;
-  category:
-    | "Security"
-    | "Operations"
-    | "Compliance"
-    | "Financial"
-    | "Strategic";
-  owner: string;
-  likelihood: "Low" | "Medium" | "High";
-  impact: "Low" | "Medium" | "High";
-  status: "Open" | "Mitigated" | "Closed";
+  createdAt: Date;
+  updatedAt: Date;
 }
-
-const RiskSchema = new Schema(
+const RiskSchema = new Schema<IRisk>(
   {
     parentId: { type: Schema.Types.ObjectId, ref: "RootNode", required: true },
     name: { type: String, required: true },
     description: { type: String, default: "" },
     category: {
       type: String,
-      enum: ["Security", "Operations", "Compliance", "Financial", "Strategic"],
+      enum: CategoryEnum.options,
       default: "Security",
     },
     owner: { type: String, required: true },
     likelihood: {
       type: String,
-      enum: ["Low", "Medium", "High"],
+      enum: LevelEnum.options,
       default: "Low",
     },
-    impact: { type: String, enum: ["Low", "Medium", "High"], default: "Low" },
+    impact: { type: String, enum: LevelEnum.options, default: "Low" },
     status: {
       type: String,
-      enum: ["Open", "Mitigated", "Closed"],
+      enum: StatusEnum.options,
       default: "Open",
     },
   },

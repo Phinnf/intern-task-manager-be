@@ -1,53 +1,20 @@
-// src/config/swagger.ts
-import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import type { Express, Request, Response } from "express";
+import fs from 'fs';
+import path from 'path';
 
-const options: swaggerJsdoc.Options = {
-  definition: {
-    openapi: "3.0.0",
-    info: {
-      title: "My Express TypeScript API",
-      version: "1.0.0",
-      description: "API documentation for my project",
-    },
-    components: {
-      securitySchemes: {
-        bearerAuth: {
-          type: "http",
-          scheme: "bearer",
-          bearerFormat: "JWT",
-        },
-      },
-    },
-    security: [
-      {
-        bearerAuth: [],
-      },
-    ],
-  },
-  // Looks for annotations in both .ts and compiled .js files
-  apis: [
-    "./src/features/**/*.route.ts",
-    "./src/features/**/*.routes.ts",
-    "./src/features/**/*.controller.ts",
-    "./dist/features/**/*.route.js",
-    "./dist/features/**/*.routes.js",
-    "./dist/features/**/*.controller.js",
-  ],
-};
-
-const swaggerSpec = swaggerJsdoc(options);
+const swaggerDocument = JSON.parse(fs.readFileSync(path.resolve('./src/shared/config/swagger-output.json'), 'utf8'));
 
 export function setupSwagger(app: Express) {
   // Serve the Swagger UI
-  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-  // Serve the Swagger JSON specification (optional, but useful)
+  // Serve the Swagger JSON specification
   app.get("/api-docs.json", (req: Request, res: Response) => {
-    res.setHeader("Content-Type", "application/json");
-    res.send(swaggerSpec);
+    res.json(swaggerDocument);
   });
 
-  console.log(`Docs available at http://localhost:${process.env.PORT || 4000}/api-docs`);
+  console.log(
+    `Docs available at http://localhost:${process.env.PORT || 4000}/api-docs`,
+  );
 }

@@ -1,13 +1,16 @@
 import mongoose, { Schema, Document } from "mongoose";
+import type { CreateControlInput } from "./control.node.validation.js";
+import {
+  CategoryEnum,
+  StatusEnum,
+  ParentModelEnum,
+} from "./control.node.validation.js";
 
-export interface IControl extends Document {
+export interface IControl
+  extends Omit<CreateControlInput, "parentId">, Document {
   parentId: mongoose.Types.ObjectId;
-  parentModel: "RootNode" | "Risk";
-  name: string;
-  description: string;
-  category: "Security" | "Operations" | "Compliance" | "Financial" | "HR";
-  owner: string;
-  status: "Active" | "Inactive";
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const ControlSchema = new Schema(
@@ -20,19 +23,19 @@ const ControlSchema = new Schema(
     parentModel: {
       type: String,
       required: true,
-      enum: ["RootNode", "Risk"],
+      enum: ParentModelEnum.options,
     },
     name: { type: String, required: true },
     description: { type: String, default: "" },
     category: {
       type: String,
       required: true,
-      enum: ["Security", "Operations", "Compliance", "Financial", "HR"],
+      enum: CategoryEnum.options,
     },
     owner: { type: String, required: true },
     status: {
       type: String,
-      enum: ["Active", "Inactive"],
+      enum: StatusEnum.options,
       default: "Active",
     },
   },

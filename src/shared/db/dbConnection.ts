@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import "dotenv/config";
 
 export default async function connectToDatabase() {
   try {
