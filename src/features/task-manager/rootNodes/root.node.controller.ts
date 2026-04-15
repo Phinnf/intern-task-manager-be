@@ -80,7 +80,7 @@ export const updateRootNode = async (
     const updatedRootNode = await RootNode.findByIdAndUpdate(
       req.params.id,
       validData,
-      { new: true, runValidators: true },
+      { returnDocument: "after", runValidators: true },
     );
     if (!updatedRootNode) {
       res.status(400).json({ success: false, message: "RootNode not found" });

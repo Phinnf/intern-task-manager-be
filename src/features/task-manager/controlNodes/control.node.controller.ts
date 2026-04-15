@@ -80,7 +80,7 @@ export const updateControlNodes = async (
     const updatedControlNode = await ControlNode.findByIdAndUpdate(
       req.params.id,
       validation.data,
-      { new: true, runValidators: true },
+      { returnDocument: "after", runValidators: true },
     );
 
     if (!updatedControlNode) {

@@ -71,7 +71,7 @@ export const updateRiskNode = async (
     const updatedRiskNode = await RiskNode.findByIdAndUpdate(
       req.params.id,
       validation.data,
-      { new: true, runValidators: true },
+      { returnDocument: "after", runValidators: true },
     );
     if (!updatedRiskNode) {
       res.status(404).json({ success: false, message: "RiskNode not found" });

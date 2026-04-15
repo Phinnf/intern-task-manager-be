@@ -57,7 +57,7 @@ export const editTodos = async (req: Request, res: Response): Promise<void> => {
     }
     const validData = validation.data;
     const updatedTodo = await Todos.findByIdAndUpdate(req.params.id, validData, {
-      new: true,
+      returnDocument: "after",
       runValidators: true,
     });
     if (!updatedTodo) {
