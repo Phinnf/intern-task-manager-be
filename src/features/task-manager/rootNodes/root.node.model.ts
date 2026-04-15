@@ -1,13 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { z } from "zod";
+import type { CreateRootInput } from "./root.node.validation.js";
 
-export const RootNodeZodSchema = z.object({
-  title: z.string().min(1, "Title cannot be empty"),
-  department: z.string().min(1, "Department is required"),
-  owner: z.string().min(1, "Owner is required"),
-});
-
-export interface IRootNode extends z.infer<typeof RootNodeZodSchema>, Document {
+export interface IRootNode extends CreateRootInput, Document {
   createdAt: Date;
   updatedAt: Date;
 }
@@ -21,4 +15,6 @@ const RootNodeSchema = new Schema(
   { timestamps: true },
 );
 
+RootNodeSchema.index({ title: 1, department: 1 });
 export const RootNode = mongoose.model<IRootNode>("RootNode", RootNodeSchema);
+

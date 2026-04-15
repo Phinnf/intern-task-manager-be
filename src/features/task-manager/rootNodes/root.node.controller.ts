@@ -1,12 +1,16 @@
 import type { Request, Response } from "express";
-import { RootNode, RootNodeZodSchema } from "./root.node.model.js";
-import { error } from "node:console";
+import { RootNode } from "./root.node.model.js";
 import { redisClient } from "../../../shared/db/redisConnection.js";
+import {
+  createRootNodeSchema,
+  updateRootNodeSchema,
+} from "./root.node.validation.js";
 import { success } from "zod";
 
 /**
  * Get all root nodes from the database
  */
+
 export const getRootNodes = async (
   req: Request,
   res: Response,
@@ -14,11 +18,10 @@ export const getRootNodes = async (
   try {
     const cachedRootNodes = await redisClient.get("rootNodes_cache");
     if (cachedRootNodes) {
-      console.log("Sending root nodes data from redis cache");
-      res.status(200).json({
-        success: true,
-        data: JSON.parse(cachedRootNodes),
-      });
+      console.log("send root nodes from redis cache");
+      res
+        .status(200)
+        .json({ success: true, data: JSON.parse(cachedRootNodes) });
       return;
     }
     const rootNodes = await RootNode.find();
@@ -28,7 +31,6 @@ export const getRootNodes = async (
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
 /**
  * Create a new root node
  */
@@ -37,7 +39,7 @@ export const createRootNode = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const validation = RootNodeZodSchema.safeParse(req.body);
+    const validation = createRootNodeSchema.safeParse(req.body);
     if (!validation.success) {
       res.status(400).json({
         success: false,
@@ -65,13 +67,23 @@ export const updateRootNode = async (
   res: Response,
 ): Promise<void> => {
   try {
+    const validation = updateRootNodeSchema.safeParse(req.body);
+    if (!validation.success) {
+      res.status(400).json({
+        success: false,
+        message: "Data are not valid",
+        error: validation.error.format(),
+      });
+      return;
+    }
+    const validData = validation.data;
     const updatedRootNode = await RootNode.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      validData,
       { new: true, runValidators: true },
     );
     if (!updatedRootNode) {
-      res.status(404).json({ success: false, message: "RootNode not found" });
+      res.status(400).json({ success: false, message: "RootNode not found" });
       return;
     }
 

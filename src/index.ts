@@ -1,6 +1,5 @@
 import "dotenv/config";
 import express, { type Application } from "express";
-import dotenv from "dotenv";
 import cors from "cors";
 import connectToDatabase from "./shared/db/dbConnection.js";
 import todoRoutes from "./features/todo/todo.routes.js";

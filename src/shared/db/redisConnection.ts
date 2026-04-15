@@ -10,7 +10,7 @@ redisClient.on(`error`, (err) => console.error(`Redis Client Error ${err}`));
 export const connectToRedis = async () => {
   try {
     await redisClient.connect();
-    console.log(`Redis Connected to: ${redisURL} successfully`);
+    console.log(`Redis Connected successfully`);
   } catch (error) {
     console.error(`Redis connection error details: ${error}`);
   }

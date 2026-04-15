@@ -1,15 +1,17 @@
 import mongoose, { Schema, Document } from "mongoose";
+import type { CreateTodoInput } from "./todo.validation.js";
 
-export interface ITodoList extends Document {
-  id: number;
-  taskText: string;
-  completed: boolean;
+export interface ITodoList extends CreateTodoInput, Document {
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-const TodoListSchema: Schema = new Schema({
-  id: { type: Number, required: true },
-  taskText: { type: String, required: true },
-  completed: { type: Boolean, required: true },
-});
+const TodoListSchema: Schema = new Schema(
+  {
+    taskText: { type: String, required: true },
+    completed: { type: Boolean, required: true, default: false },
+  },
+  { timestamps: true },
+);
 
-export default mongoose.model<ITodoList>("TodoList", TodoListSchema);
+export const Todos = mongoose.model<ITodoList>("TodoList", TodoListSchema);
