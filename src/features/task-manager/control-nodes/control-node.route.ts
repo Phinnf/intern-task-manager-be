@@ -4,7 +4,7 @@ import {
   createControlNodes,
   updateControlNodes,
   deleteControlNodes,
-} from "./control.node.controller.js";
+} from "./control-node.controller.js";
 
 const router = Router();
 

@@ -3,9 +3,9 @@ import express, { type Application } from "express";
 import cors from "cors";
 import connectToDatabase from "./shared/db/dbConnection.js";
 import todoRoutes from "./features/todo/todo.routes.js";
-import rootNodeRoutes from "./features/task-manager/rootNodes/root.node.route.js";
-import riskNodeRoutes from "./features/task-manager/riskNodes/risk.node.route.js";
-import controlNodeRoutes from "./features/task-manager/controlNodes/control.node.route.js";
+import rootNodeRoutes from "./features/task-manager/root-nodes/root-node.route.js";
+import riskNodeRoutes from "./features/task-manager/risk-nodes/risk-node.route.js";
+import controlNodeRoutes from "./features/task-manager/control-nodes/control-node.route.js";
 import { setupSwagger } from "./shared/config/swagger.js";
 import { connectToRedis } from "./shared/db/redisConnection.js";
 

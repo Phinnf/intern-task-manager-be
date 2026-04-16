@@ -1,10 +1,10 @@
 import type { Request, Response } from "express";
-import { RootNode } from "./root.node.model.js";
+import { RootNode } from "./root-node.model.js";
 import { redisClient } from "../../../shared/db/redisConnection.js";
 import {
   createRootNodeSchema,
   updateRootNodeSchema,
-} from "./root.node.validation.js";
+} from "./root-node.validation.js";
 import { success } from "zod";
 
 /**

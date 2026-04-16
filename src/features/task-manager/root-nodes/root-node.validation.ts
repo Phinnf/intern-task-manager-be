@@ -1,5 +1,5 @@
 import { z } from "zod";
-import mongoose from "mongoose";
+
 
 export const createRootNodeSchema = z.object({
   title: z.string().min(1, "Title cannot be empty"),

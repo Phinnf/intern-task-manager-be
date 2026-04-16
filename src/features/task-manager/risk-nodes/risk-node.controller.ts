@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
-import { RiskNode } from "./risk.node.model.js";
+import { RiskNode } from "./risk-node.model.js";
 import { redisClient } from "../../../shared/db/redisConnection.js";
-import { createRiskSchema, updateRiskSchema } from "./risk.node.validation.js";
+import { createRiskSchema, updateRiskSchema } from "./risk-node.validation.js";
 
 /**
  * Get all risk nodes from the database

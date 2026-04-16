@@ -4,7 +4,7 @@ import {
   createRiskNode,
   updateRiskNode,
   deleteRiskNode,
-} from "./risk.node.controller.js";
+} from "./risk-node.controller.js";
 
 const router = Router();
 

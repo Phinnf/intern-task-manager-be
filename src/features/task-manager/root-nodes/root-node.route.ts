@@ -4,7 +4,7 @@ import {
   createRootNode,
   updateRootNode,
   deleteRootNode,
-} from "./root.node.controller.js";
+} from "./root-node.controller.js";
 
 const router = Router();
 

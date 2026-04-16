@@ -1,10 +1,10 @@
 import mongoose, { Schema, Document } from "mongoose";
-import type { CreateControlInput } from "./control.node.validation.js";
+import type { CreateControlInput } from "./control-node.validation.js";
 import {
   CategoryEnum,
   StatusEnum,
   ParentModelEnum,
-} from "./control.node.validation.js";
+} from "./control-node.validation.js";
 
 export interface IControl
   extends Omit<CreateControlInput, "parentId">, Document {

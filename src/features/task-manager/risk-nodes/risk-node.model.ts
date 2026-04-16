@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
-import type { CreateRiskInput } from "./risk.node.validation.js";
-import { CategoryEnum, LevelEnum, StatusEnum } from "./risk.node.validation.js";
+import type { CreateRiskInput } from "./risk-node.validation.js";
+import { CategoryEnum, LevelEnum, StatusEnum } from "./risk-node.validation.js";
 
 export interface IRisk extends Omit<CreateRiskInput, "parentId">, Document {
   parentId: mongoose.Types.ObjectId;

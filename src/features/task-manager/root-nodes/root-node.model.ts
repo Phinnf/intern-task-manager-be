@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
-import type { CreateRootInput } from "./root.node.validation.js";
+import type { CreateRootInput } from "./root-node.validation.js";
 
 export interface IRootNode extends CreateRootInput, Document {
   createdAt: Date;
@@ -17,4 +17,3 @@ const RootNodeSchema = new Schema(
 
 RootNodeSchema.index({ title: 1, department: 1 });
 export const RootNode = mongoose.model<IRootNode>("RootNode", RootNodeSchema);
-

@@ -1,10 +1,10 @@
 import type { Request, Response } from "express";
-import { ControlNode } from "./control.node.model.js";
+import { ControlNode } from "./control-node.model.js";
 import { redisClient } from "../../../shared/db/redisConnection.js";
 import {
   createControlSchema,
   updateRiskSchema,
-} from "./control.node.validation.js";
+} from "./control-node.validation.js";
 import { success } from "zod";
 
 /**
@@ -114,7 +114,7 @@ export const deleteControlNodes = async (
         .json({ success: false, message: "ControlNode not found" });
       return;
     }
-    await redisClient.del("controlNodes_cache")
+    await redisClient.del("controlNodes_cache");
     res.status(200).json({
       success: true,
       message: "ControlNode deleted successfully",
