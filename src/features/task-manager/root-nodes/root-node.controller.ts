@@ -5,7 +5,7 @@ import {
   createRootNodeSchema,
   updateRootNodeSchema,
 } from "./root-node.validation.js";
-import { success } from "zod";
+
 
 /**
  * Get all root nodes from the database

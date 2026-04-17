@@ -3,6 +3,8 @@ import express, { type Application } from "express";
 import cors from "cors";
 import connectToDatabase from "./shared/db/dbConnection.js";
 import todoRoutes from "./features/todo/todo.routes.js";
+import userRoutes from "./features/users/user.route.js";
+import authRoutes from "./features/auth/auth.route.js";
 import rootNodeRoutes from "./features/task-manager/root-nodes/root-node.route.js";
 import riskNodeRoutes from "./features/task-manager/risk-nodes/risk-node.route.js";
 import controlNodeRoutes from "./features/task-manager/control-nodes/control-node.route.js";
@@ -17,6 +19,8 @@ async function start() {
   app.use(cors());
   app.use(express.json());
 
+  app.use("/api/auth", authRoutes);
+  app.use("/api/users", userRoutes);
   app.use("/api/todos", todoRoutes);
   app.use("/api/root-nodes", rootNodeRoutes);
   app.use("/api/risk-nodes", riskNodeRoutes);
