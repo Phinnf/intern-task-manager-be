@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { Todos } from "./todo.model.js";
+import { TodoModel } from "./todo.model.js";
 import { redisClient } from "../../shared/db/redisConnection.js";
 import { createTodoSchema, updateTodoSchema } from "./todo.validation.js";
 
@@ -11,7 +11,7 @@ export const getTodos = async (req: Request, res: Response): Promise<void> => {
       res.status(200).json({ success: true, data: JSON.parse(cachedTodos) });
       return;
     }
-    const todos = await Todos.find();
+    const todos = await TodoModel.find();
     await redisClient.setEx("Todos_cache", 3600, JSON.stringify(todos));
     res.status(200).json({ success: true, data: todos });
   } catch (error: any) {
@@ -34,7 +34,7 @@ export const createTodos = async (
       return;
     }
     const validData = validation.data;
-    const newTodo = new Todos(validData);
+    const newTodo = new TodoModel(validData);
     const savedTodo = await newTodo.save();
 
     await redisClient.del("Todos_cache");
@@ -56,7 +56,7 @@ export const editTodos = async (req: Request, res: Response): Promise<void> => {
       return;
     }
     const validData = validation.data;
-    const updatedTodo = await Todos.findByIdAndUpdate(req.params.id, validData, {
+    const updatedTodo = await TodoModel.findByIdAndUpdate(req.params.id, validData, {
       returnDocument: "after",
       runValidators: true,
     });
@@ -76,7 +76,7 @@ export const deleteTodos = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const deletedTodo = await Todos.findByIdAndDelete(req.params.id);
+    const deletedTodo = await TodoModel.findByIdAndDelete(req.params.id);
     if (!deletedTodo) {
       res.status(404).json({ success: false, message: "Todo not found" });
       return;

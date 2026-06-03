@@ -8,11 +8,16 @@ export interface IUser extends CreateUserInput, Document {
   updatedAt: Date;
 }
 
-const UserSchema = new Schema({
-  name: { type: String, required: true, min: 3, max: 255 },
-  email: { type: String, required: true, min: 3, max: 255 },
-  password: { type: String, required: true, min: 3, max: 255 },
-  role: { type: String, enum: RoleEnum.options, default: "User" },
-});
+const UserSchema = new Schema(
+  {
+    name: { type: String, required: true, min: 3, max: 255 },
+    email: { type: String, required: true, min: 3, max: 255 },
+    password: { type: String, required: true, min: 3, max: 255 },
+    role: { type: String, enum: RoleEnum.options, default: "User" },
+  },
+  {
+    timestamps: true,
+  },
+);
 
 export const user = mongoose.model<IUser>("User", UserSchema);
