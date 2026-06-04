@@ -1,9 +1,11 @@
-import { Router } from "express";
+import express, { Router } from "express";
 import {
   getTodos,
   createTodos,
   editTodos,
   deleteTodos,
+  exportTodosCsv,
+  importTodosCsv,
 } from "./todo.controller.js";
 
 const router = Router();
@@ -12,6 +14,16 @@ router.get("/", (req, res, next) => {
   // #swagger.tags = ['Todo']
   next();
 }, getTodos);
+
+router.get("/export", (req, res, next) => {
+  // #swagger.tags = ['Todo']
+  next();
+}, exportTodosCsv);
+
+router.post("/import", express.text({ type: "text/csv", limit: "10mb" }), (req, res, next) => {
+  // #swagger.tags = ['Todo']
+  next();
+}, importTodosCsv);
 
 router.post("/", (req, res, next) => {
   // #swagger.tags = ['Todo']

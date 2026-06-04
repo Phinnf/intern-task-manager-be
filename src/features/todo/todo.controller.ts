@@ -2,6 +2,11 @@ import type { Request, Response } from "express";
 import { TodoModel } from "./todo.model.js";
 import { redisClient } from "../../shared/db/redisConnection.js";
 import { createTodoSchema, updateTodoSchema } from "./todo.validation.js";
+import { TodoRepository } from "./repositories/index.js";
+import { TodoService } from "./services/index.js";
+
+const todoRepository = new TodoRepository();
+const todoService = new TodoService(todoRepository);
 
 export const getTodos = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -87,3 +92,38 @@ export const deleteTodos = async (
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+export const exportTodosCsv = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const csvContent = await todoService.exportToCsv();
+    res.setHeader("Content-Type", "text/csv");
+    res.setHeader("Content-Disposition", 'attachment; filename="todos.csv"');
+    res.status(200).send(csvContent);
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const importTodosCsv = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const csvText = req.body;
+    if (!csvText || typeof csvText !== "string") {
+      res.status(400).json({ success: false, message: "CSV content must be a string in request body" });
+      return;
+    }
+
+    const result = await todoService.importFromCsv(csvText);
+
+    // Clear redis cache
+    await redisClient.del("Todos_cache");
+
+    res.status(201).json({
+      success: true,
+      message: `${result.length} todos imported successfully`,
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
